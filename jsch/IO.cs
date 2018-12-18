@@ -35,9 +35,9 @@ namespace Tamir.SharpSsh.jsch
 
 	public class IO
 	{
-		internal JStream ins;
-		internal JStream outs;
-		internal JStream outs_ext;
+		public JStream ins;
+		public JStream outs;
+		public JStream outs_ext;
 
 		private bool in_dontclose=false;
 		private bool out_dontclose=false;
@@ -106,29 +106,29 @@ namespace Tamir.SharpSsh.jsch
 			outs.Write(p.buffer.buffer, 0, p.buffer.index);
 			outs.Flush();
 		}
-		internal void put(byte[] array, int begin, int length)
+		public void put(byte[] array, int begin, int length)
 		{
 			outs.Write(array, begin, length);
 			outs.Flush();
 		}
-		internal void put_ext(byte[] array, int begin, int length)
+		public void put_ext(byte[] array, int begin, int length)
 		{
 			outs_ext.Write(array, begin, length);
 			outs_ext.Flush();
 		}
 
-		internal int getByte()
+		public int getByte()
 		{
 			int res = ins.ReadByte()&0xff;
 			return res; 
 		}
 
-		internal void getByte(byte[] array)
+		public void getByte(byte[] array)
 		{
 			getByte(array, 0, array.Length);
 		}
 
-		internal void getByte(byte[] array, int begin, int length)
+		public void getByte(byte[] array, int begin, int length)
 		{
 			do
 			{

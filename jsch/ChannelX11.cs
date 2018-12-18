@@ -33,27 +33,27 @@ namespace Tamir.SharpSsh.jsch
 	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	*/
-	internal class ChannelX11 : Channel
+	public class ChannelX11 : Channel
 	{
 
 		private const int LOCAL_WINDOW_SIZE_MAX=0x20000;
 		private const int LOCAL_MAXIMUM_PACKET_SIZE=0x4000;
 
-		internal static String host="127.0.0.1";
-		internal static int port=6000;
+		public static String host="127.0.0.1";
+		public static int port=6000;
 
-		internal bool _init=true;
+		public bool _init=true;
 
-		internal static byte[] cookie=null;
+		public static byte[] cookie=null;
 		//static byte[] cookie_hex="0c281f065158632a427d3e074d79265d".getBytes();
-		internal static byte[] cookie_hex=null;
+		public static byte[] cookie_hex=null;
 
 		private static System.Collections.Hashtable faked_cookie_pool=new System.Collections.Hashtable();
 		private static System.Collections.Hashtable faked_cookie_hex_pool=new System.Collections.Hashtable();
 
-		internal static byte[] table={0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
+		public static byte[] table={0x30,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,
 										 0x61,0x62,0x63,0x64,0x65,0x66};
-		internal static int revtable(byte foo)
+		public static int revtable(byte foo)
 		{
 			for(int i=0; i<table.Length; i++)
 			{
@@ -61,7 +61,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 			return 0;
 		}
-		internal static void setCookie(String foo)
+		public static void setCookie(String foo)
 		{
 			cookie_hex=Util.getBytes(foo); 
 			cookie=new byte[16];
@@ -71,9 +71,9 @@ namespace Tamir.SharpSsh.jsch
 					((revtable(cookie_hex[i*2+1]))&0xf));
 			}
 		}
-		internal static void setHost(String foo){ host=foo; }
-		internal static void setPort(int foo){ port=foo; }
-		internal static byte[] getFakedCookie(Session session)
+		public static void setHost(String foo){ host=foo; }
+		public static void setPort(int foo){ port=foo; }
+		public static byte[] getFakedCookie(Session session)
 		{
 			lock(faked_cookie_hex_pool)
 			{
@@ -108,7 +108,7 @@ namespace Tamir.SharpSsh.jsch
 		}
 
 		Socket socket = null;
-		internal ChannelX11():base()
+		public ChannelX11():base()
 		{
     
 			setLocalWindowSizeMax(LOCAL_WINDOW_SIZE_MAX);
@@ -169,7 +169,7 @@ namespace Tamir.SharpSsh.jsch
 			thread=null;
 		}
 
-		internal override void write(byte[] foo, int s, int l) 
+		public override void write(byte[] foo, int s, int l) 
 		{
 			//if(eof_local)return;
 

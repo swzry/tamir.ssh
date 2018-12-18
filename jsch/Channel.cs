@@ -40,9 +40,9 @@ namespace Tamir.SharpSsh.jsch
 
 	public abstract class Channel : Tamir.SharpSsh.java.lang.Runnable
 	{
-		internal static int index=0; 
+		public static int index=0; 
 		private static java.util.Vector pool=new java.util.Vector();
-		internal static Channel getChannel(String type)
+		public static Channel getChannel(String type)
 		{
 			if(type.Equals("session"))
 			{
@@ -78,7 +78,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 			return null;
 		}
-		internal static Channel getChannel(int id, Session session)
+		public static Channel getChannel(int id, Session session)
 		{
 			lock(pool)
 			{
@@ -90,7 +90,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 			return null;
 		}
-		internal static void del(Channel c)
+		public static void del(Channel c)
 		{
 			lock(pool)
 			{
@@ -98,32 +98,32 @@ namespace Tamir.SharpSsh.jsch
 			}
 		}
 
-		internal int id;
-		internal int recipient=-1;
-		internal byte[] type=new Str("foo").getBytes();
-		internal int lwsize_max=0x100000;
-		internal int lwsize=0x100000;  // local initial window size
-		internal int lmpsize=0x4000;     // local maximum packet size
+		public int id;
+		public int recipient=-1;
+		public byte[] type=new Str("foo").getBytes();
+		public int lwsize_max=0x100000;
+		public int lwsize=0x100000;  // local initial window size
+		public int lmpsize=0x4000;     // local maximum packet size
 
-		internal int rwsize=0;         // remote initial window size
-		internal int rmpsize=0;        // remote maximum packet size
+		public int rwsize=0;         // remote initial window size
+		public int rmpsize=0;        // remote maximum packet size
 
-		internal IO io=null;    
-		internal Thread thread=null;
+		public IO io=null;    
+		public Thread thread=null;
 
-		internal bool eof_local=false;
-		internal bool _eof_remote=false;
+		public bool eof_local=false;
+		public bool _eof_remote=false;
 
-		internal bool _close=false;
-		internal bool connected=false;
+		public bool _close=false;
+		public bool connected=false;
 
-		internal int exitstatus=-1;
+		public int exitstatus=-1;
 
-		internal int reply=0; 
+		public int reply=0; 
 
-		internal Session session;
+		public Session session;
 
-		internal Channel()
+		public Channel()
 		{
 			lock(pool)
 			{
@@ -131,11 +131,11 @@ namespace Tamir.SharpSsh.jsch
 				pool.addElement(this);
 			}
 		}
-		internal virtual void setRecipient(int foo)
+		public virtual void setRecipient(int foo)
 		{
 			this.recipient=foo;
 		}
-		internal virtual int getRecipient()
+		public virtual int getRecipient()
 		{
 			return recipient;
 		}
@@ -203,7 +203,7 @@ namespace Tamir.SharpSsh.jsch
 
 		public bool isEOF() {return _eof_remote;}
 
-		internal virtual void getData(Buffer buf)
+		public virtual void getData(Buffer buf)
 		{
 			setRecipient(buf.getInt());
 			setRemoteWindowSize(buf.getInt());
@@ -261,37 +261,37 @@ namespace Tamir.SharpSsh.jsch
 			//  io.setInputStream(new PassiveInputStream(Out), false);
 			return Out;
 		}
-		internal class MyPipedInputStream : PipedInputStream
+		public class MyPipedInputStream : PipedInputStream
 		{
-			internal MyPipedInputStream():base() { ; }
-			internal MyPipedInputStream(int size) :base()
+			public MyPipedInputStream():base() { ; }
+			public MyPipedInputStream(int size) :base()
 			{
 				buffer=new byte[size];
 			}
-			internal MyPipedInputStream(PipedOutputStream Out):base(Out) { }
-			internal MyPipedInputStream(PipedOutputStream Out, int size):base(Out) 
+			public MyPipedInputStream(PipedOutputStream Out):base(Out) { }
+			public MyPipedInputStream(PipedOutputStream Out, int size):base(Out) 
 			{
 				buffer=new byte[size];
 			}
 		}
-		internal virtual void setLocalWindowSizeMax(int foo){ this.lwsize_max=foo; }
-		internal virtual void setLocalWindowSize(int foo){ this.lwsize=foo; }
-		internal virtual void setLocalPacketSize(int foo){ this.lmpsize=foo; }
+		public virtual void setLocalWindowSizeMax(int foo){ this.lwsize_max=foo; }
+		public virtual void setLocalWindowSize(int foo){ this.lwsize=foo; }
+		public virtual void setLocalPacketSize(int foo){ this.lmpsize=foo; }
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.Synchronized)]
-		internal virtual void setRemoteWindowSize(int foo){ this.rwsize=foo; }
+		public virtual void setRemoteWindowSize(int foo){ this.rwsize=foo; }
 		[System.Runtime.CompilerServices.MethodImpl(MethodImplOptions.Synchronized)]
-		internal virtual void addRemoteWindowSize(int foo){ this.rwsize+=foo; }
-		internal virtual void setRemotePacketSize(int foo){ this.rmpsize=foo; }
+		public virtual void addRemoteWindowSize(int foo){ this.rwsize+=foo; }
+		public virtual void setRemotePacketSize(int foo){ this.rmpsize=foo; }
 
 		public virtual void run()
 		{
 		}
 
-		internal virtual void write(byte[] foo)  
+		public virtual void write(byte[] foo)  
 		{
 			write(foo, 0, foo.Length);
 		}
-		internal virtual void write(byte[] foo, int s, int l)  
+		public virtual void write(byte[] foo, int s, int l)  
 		{
 			try
 			{
@@ -300,7 +300,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 			catch(NullReferenceException e){}
 		}
-		internal virtual void write_ext(byte[] foo, int s, int l)  
+		public virtual void write_ext(byte[] foo, int s, int l)  
 		{
 			try
 			{
@@ -310,7 +310,7 @@ namespace Tamir.SharpSsh.jsch
 			catch(NullReferenceException e){}
 		}
 
-		internal virtual void eof_remote()
+		public virtual void eof_remote()
 		{
 			_eof_remote=true;
 			try
@@ -325,7 +325,7 @@ namespace Tamir.SharpSsh.jsch
 			catch(IOException e){}
 		}
 
-		internal virtual void eof()
+		public virtual void eof()
 		{
 			//System.Out.println("EOF!!!! "+this);
 			//Thread.dumpStack();
@@ -388,7 +388,7 @@ namespace Tamir.SharpSsh.jsch
 		   to the actual destination, if possible.
 		*/
 
-		internal virtual void close()
+		public virtual void close()
 		{
 			//System.Out.println("close!!!!");
 			if(_close)return;
@@ -411,7 +411,7 @@ namespace Tamir.SharpSsh.jsch
 		{
 			return _close;
 		}
-		internal static void disconnect(Session session)
+		public static void disconnect(Session session)
 		{
 			Channel[] channels=null;
 			int count=0;
@@ -505,14 +505,14 @@ namespace Tamir.SharpSsh.jsch
 		  }
 		*/
 
-		internal class PassiveInputStream : MyPipedInputStream
+		public class PassiveInputStream : MyPipedInputStream
 		{
-			internal PipedOutputStream Out;
-			internal PassiveInputStream(PipedOutputStream Out, int size) :base(Out, size)
+			public PipedOutputStream Out;
+			public PassiveInputStream(PipedOutputStream Out, int size) :base(Out, size)
 			{
 				this.Out=Out;
 			}
-			internal PassiveInputStream(PipedOutputStream Out):base(Out) 
+			public PassiveInputStream(PipedOutputStream Out):base(Out) 
 			{
 				this.Out=Out;
 			}
@@ -525,17 +525,17 @@ namespace Tamir.SharpSsh.jsch
 				Out=null;
 			}
 		}
-		internal class PassiveOutputStream : PipedOutputStream
+		public class PassiveOutputStream : PipedOutputStream
 		{
-			internal PassiveOutputStream(PipedInputStream In) :base(In)
+			public PassiveOutputStream(PipedInputStream In) :base(In)
 			{
 			}
 		}
 
-		internal virtual void setExitStatus(int foo){ exitstatus=foo; }
+		public virtual void setExitStatus(int foo){ exitstatus=foo; }
 		public virtual int getExitStatus(){ return exitstatus; }
 
-		internal virtual void setSession(Session session)
+		public virtual void setSession(Session session)
 		{
 			this.session=session;
 		}

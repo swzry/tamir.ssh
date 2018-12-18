@@ -709,8 +709,19 @@ namespace Tamir.SharpSsh.jsch
 			return null;
 		}
 
-		// encode will bin invoked in write with synchronization.
-		public void encode(Packet packet) 
+        public Channel openChannel(Channel ch)
+        {
+            if (!_isConnected)
+            {
+                throw new JSchException("session is down");
+            }
+            addChannel(ch);
+            ch.init();
+            return ch;
+        }
+
+        // encode will bin invoked in write with synchronization.
+        public void encode(Packet packet) 
 		{
 			//System.Console.WriteLine("encode: "+packet.buffer.buffer[5]);
 			//System.Console.WriteLine("        "+packet.buffer.index);

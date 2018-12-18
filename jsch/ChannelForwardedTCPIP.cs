@@ -39,18 +39,18 @@ namespace Tamir.SharpSsh.jsch
 	public class ChannelForwardedTCPIP : Channel
 	{
 
-		internal static java.util.Vector pool=new java.util.Vector();
+		public static java.util.Vector pool=new java.util.Vector();
 
 		//  static private final int LOCAL_WINDOW_SIZE_MAX=0x20000;
 		static private int LOCAL_WINDOW_SIZE_MAX=0x100000;
 		static private int LOCAL_MAXIMUM_PACKET_SIZE=0x4000;
 
-		internal SocketFactory factory=null;
-		internal String target;
-		internal int lport;
-		internal int rport;
+		public SocketFactory factory=null;
+		public String target;
+		public int lport;
+		public int rport;
 
-		internal ChannelForwardedTCPIP() : base()
+		public ChannelForwardedTCPIP() : base()
 		{			
 			setLocalWindowSizeMax(LOCAL_WINDOW_SIZE_MAX);
 			setLocalWindowSize(LOCAL_WINDOW_SIZE_MAX);
@@ -129,7 +129,7 @@ namespace Tamir.SharpSsh.jsch
 			//eof();
 			disconnect();
 		}
-		internal override void getData(Buffer buf)
+		public override void getData(Buffer buf)
 		{
 			setRecipient(buf.getInt());
 			setRemoteWindowSize(buf.getInt());
@@ -170,7 +170,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 		}
 
-		internal static Object[] getPort(Session session, int rport)
+		public static Object[] getPort(Session session, int rport)
 		{
 			lock(pool)
 			{
@@ -185,7 +185,7 @@ namespace Tamir.SharpSsh.jsch
 			}
 		}
 
-		internal static String[] getPortForwarding(Session session)
+		public static String[] getPortForwarding(Session session)
 		{
 			java.util.Vector foo=new java.util.Vector();
 			lock(pool)
@@ -206,7 +206,7 @@ namespace Tamir.SharpSsh.jsch
 			return bar2;
 		}
 
-		internal static void addPort(Session session, int port, String target, int lport, SocketFactory factory)
+		public static void addPort(Session session, int port, String target, int lport, SocketFactory factory)
 		{
 			lock(pool)
 			{
@@ -221,7 +221,7 @@ namespace Tamir.SharpSsh.jsch
 				pool.addElement(foo);
 			}
 		}
-		internal static void addPort(Session session, int port, String daemon, Object[] arg) 
+		public static void addPort(Session session, int port, String daemon, Object[] arg) 
 		{
 			lock(pool)
 			{
@@ -235,11 +235,11 @@ namespace Tamir.SharpSsh.jsch
 				pool.addElement(foo);
 			}
 		}
-		internal static void delPort(ChannelForwardedTCPIP c)
+		public static void delPort(ChannelForwardedTCPIP c)
 		{
 			delPort(c.session, c.rport);
 		}
-		internal static void delPort(Session session, int rport)
+		public static void delPort(Session session, int rport)
 		{
 			lock(pool)
 			{
@@ -279,7 +279,7 @@ namespace Tamir.SharpSsh.jsch
 				//    throw new JSchException(e.toString());
 			}
 		}
-		internal static void delPort(Session session)
+		public static void delPort(Session session)
 		{
 			int[] rport=null;
 			int count=0;
